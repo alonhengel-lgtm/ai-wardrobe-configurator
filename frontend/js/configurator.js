@@ -41,6 +41,10 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
+// application role: screen readers pass the arrow keys through to the keyboard orbit below
+renderer.domElement.setAttribute('role', 'application');
+renderer.domElement.setAttribute('aria-label', '3D preview of your wardrobe. Arrow keys rotate the view, plus and minus zoom. Every setting shown here can also be changed with the labelled fields beside it.');
+renderer.domElement.tabIndex = 0;
 container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -51,6 +55,30 @@ controls.minDistance = 1.8;
 controls.maxDistance = 7.0;
 controls.target.set(0, 1.2, 0);
 controls.addEventListener('start', () => { cameraGoal = null; });
+
+// keyboard orbit (WCAG 2.1.1): everything the mouse can do to the view, the keyboard can too
+const ORBIT_STEP = Math.PI / 24;
+const ZOOM_STEP = 1.1;
+const KEY_MOVES = {
+  ArrowLeft: (s) => { s.theta -= ORBIT_STEP; },
+  ArrowRight: (s) => { s.theta += ORBIT_STEP; },
+  ArrowUp: (s) => { s.phi -= ORBIT_STEP; },
+  ArrowDown: (s) => { s.phi += ORBIT_STEP; },
+  '+': (s) => { s.radius /= ZOOM_STEP; },
+  '=': (s) => { s.radius /= ZOOM_STEP; },
+  '-': (s) => { s.radius *= ZOOM_STEP; },
+};
+renderer.domElement.addEventListener('keydown', (event) => {
+  const move = KEY_MOVES[event.key];
+  if (!move) return;
+  event.preventDefault();
+  const orbit = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+  move(orbit);
+  orbit.phi = THREE.MathUtils.clamp(orbit.phi, 0.05, controls.maxPolarAngle);
+  orbit.radius = THREE.MathUtils.clamp(orbit.radius, controls.minDistance, controls.maxDistance);
+  cameraGoal = null;
+  camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(orbit));
+});
 
 scene.add(new THREE.AmbientLight(0xfffaea, 2.2));
 const sun = new THREE.DirectionalLight(0xfff3e3, 3.2);

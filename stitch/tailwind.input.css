@@ -9,6 +9,20 @@
   main > :first-child { margin-top: 0 !important; }
   main > :last-child { margin-bottom: 0 !important; }
 
+  /* accessibility (IS 5568 / WCAG 2.0 AA): visible keyboard focus beats focus:outline-none utilities */
+  :focus-visible { outline: 3px solid #8a4416 !important; outline-offset: 2px; }
+  main:focus { outline: none; }
+  .skip-link {
+    position: fixed; top: 0.5rem; left: 0.5rem; z-index: 100;
+    padding: 0.75rem 1rem; border-radius: 0.5rem;
+    background: #3a302a; color: #faf5ee; font-size: 0.875rem; font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
   /* page-level rules carried over from the staff screens */
 body {
       background-color: #faf5ee;
@@ -18,7 +32,7 @@ body {
     }
     input:focus {
       outline: none;
-      border-color: #c2652a;
+      border-color: #9d5222;
       box-shadow: 0 0 0 3px rgba(194, 101, 42, 0.15);
     }
 body {
@@ -43,3 +57,32 @@ body {
       background: #faf5ee;
     }
 }
+
+/* accessibility menu (frontend/js/a11y-menu.js); kept outside @layer so it is never purged */
+.a11y-menu { position: fixed; left: 1rem; bottom: 1rem; z-index: 90; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; font-family: 'Manrope', sans-serif; }
+.a11y-menu-toggle { width: 3rem; height: 3rem; border-radius: 9999px; display: grid; place-items: center; background: #3a302a; color: #faf5ee; box-shadow: 0 4px 16px rgba(58, 48, 42, 0.25); }
+.a11y-menu-toggle:hover { background: #9d5222; }
+.a11y-menu-panel { width: 15rem; padding: 1rem; border-radius: 0.75rem; background: #ffffff; color: #3a302a; border: 1px solid #d8d0c8; box-shadow: 0 8px 32px rgba(58, 48, 42, 0.18); display: flex; flex-direction: column; gap: 0.5rem; }
+.a11y-menu-title { font-size: 1rem; font-weight: 700; }
+.a11y-menu-row { display: flex; align-items: center; gap: 0.5rem; }
+.a11y-menu-label { flex: 1; font-size: 0.875rem; }
+.a11y-menu-btn { min-width: 2.75rem; min-height: 2.5rem; padding: 0.5rem 0.75rem; border-radius: 0.5rem; border: 1px solid #6c655f; background: #faf5ee; color: #3a302a; font-size: 0.875rem; font-weight: 600; text-align: left; }
+.a11y-menu-btn:hover:not([disabled]) { background: #f1e2d5; }
+.a11y-menu-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.a11y-menu-btn[aria-pressed="true"] { background: #3a302a; color: #faf5ee; border-color: #3a302a; }
+.a11y-menu-btn[aria-pressed]::after { content: " ✓"; visibility: hidden; }
+.a11y-menu-btn[aria-pressed="true"]::after { visibility: visible; }
+.a11y-menu-wide { width: 100%; }
+.a11y-menu-link { font-size: 0.875rem; color: #9d5222; text-decoration: underline; }
+.a11y-menu-status { font-size: 0.75rem; color: #605850; min-height: 1rem; }
+
+/* display modes the menu switches on the <html> element */
+html.a11y-contrast body, html.a11y-contrast body *:not(svg):not(svg *) { background-color: #ffffff !important; color: #000000 !important; border-color: #000000 !important; box-shadow: none !important; text-shadow: none !important; }
+/* same selector shape as the reset rule above, so equal specificity and the later rule wins */
+html.a11y-contrast body :is(a, a *):not(svg):not(svg *) { color: #0000cc !important; }
+html.a11y-contrast .a11y-menu { background-color: transparent !important; }
+html.a11y-contrast .a11y-menu-toggle, html.a11y-contrast .a11y-menu-btn[aria-pressed="true"] { background-color: #000000 !important; color: #ffffff !important; }
+html.a11y-contrast #three-canvas-container, html.a11y-contrast canvas { background-color: transparent !important; }
+html.a11y-links a { text-decoration: underline !important; text-underline-offset: 3px; }
+html.a11y-font body, html.a11y-font body *:not(.material-symbols-outlined) { font-family: Arial, Helvetica, sans-serif !important; letter-spacing: 0.01em !important; }
+html.a11y-motion *, html.a11y-motion ::before, html.a11y-motion ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

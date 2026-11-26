@@ -11,7 +11,7 @@
   
   
 <title>Quotation requests | Atelier Joinery Studio</title><link href="../css/styles.css" rel="stylesheet"/></head>
-<body class="min-h-screen flex flex-col bg-linen text-bark">
+<body class="min-h-screen flex flex-col bg-linen text-bark"><a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- 1. HEADER (Top bar matching Staff Sign-In style) -->
   <header class="w-full bg-white border-b border-outline-variant sticky top-0 z-30 shadow-sm">
@@ -47,7 +47,7 @@
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-[1400px] w-full mx-auto px-6 lg:px-10 py-8 flex flex-col">
+  <main id="main" tabindex="-1" class="flex-1 max-w-[1400px] w-full mx-auto px-6 lg:px-10 py-8 flex flex-col">
 
     <!-- 2. PAGE TITLE ROW -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6">
@@ -67,7 +67,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </div>
-        <input 
+        <input aria-label="Search requests" 
           type="text" 
           placeholder="Search by name, email or request ID" 
           class="w-full pl-10 pr-4 py-2.5 bg-white border border-outline-variant rounded-custom text-sm text-bark placeholder:text-subtle-text focus:outline-none focus:border-sienna focus:ring-1 focus:ring-sienna transition-all shadow-sm"
@@ -361,13 +361,13 @@
       <div class="flex items-center space-x-3">
         <span class="font-medium text-bark">1–6 of 6</span>
         <div class="inline-flex rounded-custom border border-outline-variant bg-white overflow-hidden shadow-xs">
-          <button type="button" disabled class="px-2.5 py-1.5 text-outline-variant cursor-not-allowed bg-[#fcf9f5]">
+          <button type="button" disabled aria-label="Previous page" class="px-2.5 py-1.5 text-outline-variant cursor-not-allowed bg-[#fcf9f5]">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
           <div class="w-[1px] bg-outline-variant"></div>
-          <button type="button" disabled class="px-2.5 py-1.5 text-outline-variant cursor-not-allowed bg-[#fcf9f5]">
+          <button type="button" disabled aria-label="Next page" class="px-2.5 py-1.5 text-outline-variant cursor-not-allowed bg-[#fcf9f5]">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
@@ -391,5 +391,5 @@
     </div>
   </footer>
 
-<script defer src="../js/staff/requests.js"></script></body>
+<script defer src="../js/staff/requests.js"></script><script defer src="../js/a11y-menu.js"></script></body>
 </html>
